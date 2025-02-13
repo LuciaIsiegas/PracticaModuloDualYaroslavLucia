@@ -18,14 +18,6 @@ public class Metodos {
 		return num;
 	}
 	
-	public static String subMenu(String opcion, Scanner sc) {
-		String mensaje = opcion + ": \n"
-				+ "1. Estadisticas\n"
-				+ "2. Jugadores\n"
-				+ "3. Equipos\n"
-				+ "4. Partidos\n"
-				+ "Tabla seleccionada: ";
-		return mensaje;
-	}
+	
 
 }
