@@ -21,16 +21,11 @@ public class Principal {
 				System.out.println("_______________________________________________\n"
 						+ "Menú de opciones\n"
 						+ "_______________________________________________\n"
-						+ "1- Mostrar datos de tabla1\n"
-						+ "2- Mostrar datos de tabla2\n"
-						+ "3- Mostrar datos de tabla1 y tabla2\n"
-						+ "4- Alta de datos en tabla1\n"
-						+ "5- Alta de datos en tabla2\n"
-						+ "6- Modificar datos de tabla1\n"
-						+ "7- Modificar datos de tabla2\n"
-						+ "8- Eliminar datos de tabla1\n"
-						+ "9- Eliminar datos de tabla1\n"
-						+ "10-Salir\n"
+						+ "1- Mostrar datos\n"
+						+ "2- Alta de datos\n"
+						+ "3- Modificar datos\n"
+						+ "4- Eliminar datos\n"
+						+ "5- Salir\n"
 						+ "_______________________________________________");
 				
 				System.out.print("Tu opción: ");
@@ -42,30 +37,24 @@ public class Principal {
 				
 				switch (opcion) {
 				case 1:
+					String opcion1 = "Mostrar datos de";
 					break;
 				case 2:
+					String opcion2 = "Dar de alta datos en";
 					break;
 				case 3:
+					String opcion3 = "Modificar datos de";
 					break;
 				case 4:
+					String opcion4 = "Modificar datos de";
 					break;
 				case 5:
-					break;
-				case 6:
-					break;
-				case 7:
-					break;
-				case 8:
-					break;
-				case 9:
-					break;
-				case 10:
 					System.out.println("Fin del programa.");
 					break;
 				default:
 					System.out.println("Opción no disponible.\n");
 				}
-			} while(opcion != 10);
+			} while(opcion != 5);
 			
 			
 			conexion.close();
