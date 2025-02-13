@@ -19,5 +19,34 @@ public class Metodos {
 	}
 	
 	
+	public static void mostrarDatos(Scanner sc, String mensaje) {
+		int tabla = getInt(sc, mensaje);
+		
+		switch (tabla) {
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		default:
+			
+		}
+	}
+	
+	public static void altaDatos() {
+		
+	}
+	
+	public static void modificarDatos() {
+		
+	}
+	
+	public static void eliminarDatos() {
+		
+	}
+	
 
 }
