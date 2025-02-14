@@ -7,11 +7,19 @@ public class Metodos {
 
 	static final String BBDD = "jdbc:mysql://localhost:3306/nba";
 	static final String USER = "root";
-	static final String MENU = "_______________________________________________\n" + "Menú de opciones\n"
-			+ "_______________________________________________\n" + "1- Mostrar datos\n" + "2- Alta de datos\n"
-			+ "3- Modificar datos\n" + "4- Eliminar datos\n" + "5- Salir\n"
+	static final String MENU = "_______________________________________________\n" 
+			+ "Menú de opciones\n"
+			+ "_______________________________________________\n" 
+			+ "1- Mostrar datos\n" 
+			+ "2- Alta de datos\n"
+			+ "3- Modificar datos\n" 
+			+ "4- Eliminar datos\n" 
+			+ "5- Salir\n"
 			+ "_______________________________________________";
-	static final String TABLAS = "1. Estadisticas\n" + "2. Jugadores\n" + "3. Equipos\n" + "4. Partidos\n"
+	static final String TABLAS = "1. Estadisticas\n" 
+			+ "2. Jugadores\n" 
+			+ "3. Equipos\n" 
+			+ "4. Partidos\n"
 			+ "Elige la tabla: ";
 
 	public static int getInt(Scanner sc, String mensaje) {
@@ -47,7 +55,47 @@ public class Metodos {
 
 	public static void mostrarDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc);
+		if (tabla == null) {
+			System.out.println("No existe esa tabla.");
+			return;
+		}
 		
+		String consulta = "select * from " + tabla;
+		try {
+			PreparedStatement ps = connection.prepareStatement(consulta);
+			ResultSet res = ps.executeQuery();
+			ResultSetMetaData rmd = res.getMetaData();
+			
+			// ENCABEZADO
+			int columnas = rmd.getColumnCount();
+			for (int i = 1; i <= columnas; i++) {
+				if (i == 1) {
+					System.out.printf("%15s", rmd.getColumnName(i));
+				} else {
+					System.out.printf("%25s", rmd.getColumnName(i));
+				}
+			}
+			System.out.println();
+			for (int j = 0; j < columnas*25; j++) {
+				System.out.print("*");
+			}
+			System.out.println();
+			
+			// DATOS
+			while (res.next()) {
+				for (int k = 1; k <= columnas; k++) {
+					if (k == 1) {
+						System.out.printf("%15s", res.getString(k));
+					} else {
+						System.out.printf("%25s", res.getString(k));
+					}
+					
+				}
+				System.out.println();
+			}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}
 	}
 
 	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
