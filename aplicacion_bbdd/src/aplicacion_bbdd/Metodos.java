@@ -45,13 +45,46 @@ public class Metodos {
 		}
 	}
 
+	public static boolean validarDatosParaConsulta(String str)
+	{
+		if(str.contains(";")) return false;
+		else return true;
+	}
+	
+	public static String prepararConsultaInsert(String[] values, String tabla) {
+		String consulta = "insert into " + tabla + " values (";
+		for (int i = 0; i < values.length; i++) {
+			consulta += "'" + values[i] + "'";
+			if (i != values.length - 1)
+				consulta += ",";
+		}
+		consulta += ");";
+		return consulta;
+	}
+
 	public static void mostrarDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc);
-		
+
 	}
 
 	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc);
+		String[] insertValues = null;
+		
+		switch (tabla) {
+		case "estadisticas":
+
+			break;
+		case "jugadores":
+
+			break;
+		case "equipos":
+
+			break;
+		case "partidos":
+
+			break;
+		}
 	}
 
 	public static void modificarDatos(Connection connection, Scanner sc, String mensaje) {
