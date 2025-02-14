@@ -38,20 +38,20 @@ public class Principal {
 				switch (opcion) {
 				case 1:
 					String opcion1 = "\nMostrar datos de:\n";
-					int tabla = Metodos.getInt(sc, opcion1 + TABLAS);
+					Metodos.mostrarDatos(conexion, sc, opcion1 + TABLAS);
 					
 					break;
 				case 2:
 					String opcion2 = "\nDar de alta datos en";
-					
+					Metodos.altaDatos(conexion, sc, opcion2 + TABLAS);
 					break;
 				case 3:
 					String opcion3 = "\nModificar datos de";
-					
+					Metodos.modificarDatos(conexion ,sc, opcion3 + TABLAS);
 					break;
 				case 4:
-					String opcion4 = "\nModificar datos de";
-					
+					String opcion4 = "\nEliminar datos de";
+					Metodos.eliminarDatos(conexion, sc, opcion4 + TABLAS);
 					break;
 				case 5:
 					System.out.println("Fin del programa.");

@@ -1,6 +1,7 @@
 package aplicacion_bbdd;
 
 import java.util.Scanner;
+import java.sql.*;
 
 public class Metodos {
 	
@@ -19,7 +20,7 @@ public class Metodos {
 	}
 	
 	
-	public static void mostrarDatos(Scanner sc, String mensaje) {
+	public static void mostrarDatos(Connection connection, Scanner sc, String mensaje) {
 		int tabla = getInt(sc, mensaje);
 		
 		switch (tabla) {
@@ -36,15 +37,15 @@ public class Metodos {
 		}
 	}
 	
-	public static void altaDatos() {
+	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
 		
 	}
 	
-	public static void modificarDatos() {
+	public static void modificarDatos(Connection connection, Scanner sc, String mensaje) {
 		
 	}
 	
-	public static void eliminarDatos() {
+	public static void eliminarDatos(Connection connection, Scanner sc, String mensaje) {
 		
 	}
 	
