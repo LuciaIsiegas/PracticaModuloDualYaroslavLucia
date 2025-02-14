@@ -4,7 +4,16 @@ import java.util.Scanner;
 import java.sql.*;
 
 public class Metodos {
-	
+
+	static final String BBDD = "jdbc:mysql://localhost:3306/nba";
+	static final String USER = "root";
+	static final String MENU = "_______________________________________________\n" + "Menú de opciones\n"
+			+ "_______________________________________________\n" + "1- Mostrar datos\n" + "2- Alta de datos\n"
+			+ "3- Modificar datos\n" + "4- Eliminar datos\n" + "5- Salir\n"
+			+ "_______________________________________________";
+	static final String TABLAS = "1. Estadisticas\n" + "2. Jugadores\n" + "3. Equipos\n" + "4. Partidos\n"
+			+ "Elige la tabla: ";
+
 	public static int getInt(Scanner sc, String mensaje) {
 		boolean correcto = false;
 		int num = 0;
@@ -18,36 +27,39 @@ public class Metodos {
 		} while (!correcto);
 		return num;
 	}
-	
-	
-	public static void mostrarDatos(Connection connection, Scanner sc, String mensaje) {
-		int tabla = getInt(sc, mensaje);
-		
-		switch (tabla) {
+
+	public static String elegirTabla(Scanner sc) {
+		int numeroDeLaTabla = Metodos.getInt(sc, Metodos.TABLAS);
+
+		switch (numeroDeLaTabla) {
 		case 1:
-			break;
+			return "estadisticas";
 		case 2:
-			break;
+			return "jugadores";
 		case 3:
-			break;
+			return "equipos";
 		case 4:
-			break;
+			return "partidos";
 		default:
-			
+			return null;
 		}
 	}
-	
+
+	public static void mostrarDatos(Connection connection, Scanner sc, String mensaje) {
+		String tabla = Metodos.elegirTabla(sc);
+		
+	}
+
 	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
-		
+		String tabla = Metodos.elegirTabla(sc);
 	}
-	
+
 	public static void modificarDatos(Connection connection, Scanner sc, String mensaje) {
-		
+		String tabla = Metodos.elegirTabla(sc);
 	}
-	
+
 	public static void eliminarDatos(Connection connection, Scanner sc, String mensaje) {
-		
+		String tabla = Metodos.elegirTabla(sc);
 	}
-	
 
 }

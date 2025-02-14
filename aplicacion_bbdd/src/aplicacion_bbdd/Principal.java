@@ -4,54 +4,38 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class Principal {
-	
-	static final String BBDD = "jdbc:mysql://localhost:3306/nba";
-	static final String USER = "root";
-	static final String MENU = "_______________________________________________\n"
-			+ "Menú de opciones\n"
-			+ "_______________________________________________\n"
-			+ "1- Mostrar datos\n"
-			+ "2- Alta de datos\n"
-			+ "3- Modificar datos\n"
-			+ "4- Eliminar datos\n"
-			+ "5- Salir\n"
-			+ "_______________________________________________";
-	static final String TABLAS = "1. Estadisticas\n"
-			+ "2. Jugadores\n"
-			+ "3. Equipos\n"
-			+ "4. Partidos\n"
-			+ "Tabla seleccionada: ";
+
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		Connection conexion = null;
 		
 		try {
-			conexion = DriverManager.getConnection(BBDD, USER, "");
+			conexion = DriverManager.getConnection(Metodos.BBDD, Metodos.USER, "");
 			System.out.println("¡Bienvenido a la base de datos de la NBA!");
 			
 			int opcion = 0;
 			do {
-				opcion = Metodos.getInt(sc, MENU + "\nTu opcion: ");
+				opcion = Metodos.getInt(sc,Metodos. MENU + "\nTu opcion: ");
 				
 				
 				switch (opcion) {
 				case 1:
 					String opcion1 = "\nMostrar datos de:\n";
-					Metodos.mostrarDatos(conexion, sc, opcion1 + TABLAS);
+					Metodos.mostrarDatos(conexion, sc, opcion1 + Metodos.TABLAS);
 					
 					break;
 				case 2:
 					String opcion2 = "\nDar de alta datos en";
-					Metodos.altaDatos(conexion, sc, opcion2 + TABLAS);
+					Metodos.altaDatos(conexion, sc, opcion2 + Metodos.TABLAS);
 					break;
 				case 3:
 					String opcion3 = "\nModificar datos de";
-					Metodos.modificarDatos(conexion ,sc, opcion3 + TABLAS);
+					Metodos.modificarDatos(conexion ,sc, opcion3 + Metodos.TABLAS);
 					break;
 				case 4:
 					String opcion4 = "\nEliminar datos de";
-					Metodos.eliminarDatos(conexion, sc, opcion4 + TABLAS);
+					Metodos.eliminarDatos(conexion, sc, opcion4 + Metodos.TABLAS);
 					break;
 				case 5:
 					System.out.println("Fin del programa.");
