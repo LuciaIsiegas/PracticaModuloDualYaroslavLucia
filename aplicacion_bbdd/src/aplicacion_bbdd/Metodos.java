@@ -14,6 +14,43 @@ public class Metodos {
 	static final String TABLAS = "1. Estadisticas\n" + "2. Jugadores\n" + "3. Equipos\n" + "4. Partidos\n"
 			+ "Elige la tabla: ";
 
+	public static boolean isInt(String num)
+	{
+		try
+		{
+			Integer.parseInt(num);
+			return true;
+		} catch(NumberFormatException e)
+		{
+			return false;
+		}
+	}
+	
+	public static boolean isDouble(String num)
+	{
+		try
+		{
+			Double.parseDouble(num);
+			return true;
+		} catch(NumberFormatException e)
+		{
+			return false;
+		}
+	}
+	
+	public static boolean isFloat(String num)
+	{
+		try
+		{
+			Float.parseFloat(num);
+			return true;
+		} catch(NumberFormatException e)
+		{
+			return false;
+		}
+	}
+	
+	
 	public static int getInt(Scanner sc, String mensaje) {
 		boolean correcto = false;
 		int num = 0;
@@ -73,7 +110,16 @@ public class Metodos {
 		
 		switch (tabla) {
 		case "estadisticas":
-
+			insertValues = Estadisticas.cogerDatos(sc);
+			String consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
+			try {
+				PreparedStatement sentencia = connection.prepareStatement(consultaFinal);
+				sentencia.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		case "jugadores":
 
