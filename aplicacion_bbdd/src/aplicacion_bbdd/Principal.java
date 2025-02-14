@@ -22,28 +22,32 @@ public class Principal {
 				switch (opcion) {
 				case 1:
 					String opcion1 = "\nMostrar datos de:\n";
-					Metodos.mostrarDatos(conexion, sc, opcion1 + Metodos.TABLAS);
+					Metodos.mostrarDatos(conexion, sc, opcion1);
 					
 					break;
 				case 2:
-					String opcion2 = "\nDar de alta datos en";
-					Metodos.altaDatos(conexion, sc, opcion2 + Metodos.TABLAS);
+					String opcion12 = "\nMostrar datos de:\n";
+					
 					break;
 				case 3:
-					String opcion3 = "\nModificar datos de";
-					Metodos.modificarDatos(conexion ,sc, opcion3 + Metodos.TABLAS);
+					String opcion2 = "\nDar de alta datos en:\n";
+					Metodos.altaDatos(conexion, sc, opcion2);
 					break;
 				case 4:
-					String opcion4 = "\nEliminar datos de";
-					Metodos.eliminarDatos(conexion, sc, opcion4 + Metodos.TABLAS);
+					String opcion3 = "\nModificar datos de:\n";
+					Metodos.modificarDatos(conexion ,sc, opcion3);
 					break;
 				case 5:
+					String opcion4 = "\nEliminar datos de:\n";
+					Metodos.eliminarDatos(conexion, sc, opcion4);
+					break;
+				case 6:
 					System.out.println("Fin del programa.");
 					break;
 				default:
 					System.out.println("Opción no disponible.\n");
 				}
-			} while(opcion != 5);
+			} while(opcion != 6);
 			
 			
 			conexion.close();

@@ -11,10 +11,11 @@ public class Metodos {
 			+ "Menú de opciones\n"
 			+ "_______________________________________________\n" 
 			+ "1- Mostrar datos\n" 
-			+ "2- Alta de datos\n"
-			+ "3- Modificar datos\n" 
-			+ "4- Eliminar datos\n" 
-			+ "5- Salir\n"
+			+ "2- Mostrar datos de dos tablas relacionadas\n"
+			+ "3- Alta de datos\n"
+			+ "4- Modificar datos\n" 
+			+ "5- Eliminar datos\n" 
+			+ "6- Salir\n"
 			+ "_______________________________________________";
 	static final String TABLAS = "1. Estadisticas\n" 
 			+ "2. Jugadores\n" 
@@ -36,8 +37,8 @@ public class Metodos {
 		return num;
 	}
 
-	public static String elegirTabla(Scanner sc) {
-		int numeroDeLaTabla = Metodos.getInt(sc, Metodos.TABLAS);
+	public static String elegirTabla(Scanner sc, String mensaje) {
+		int numeroDeLaTabla = Metodos.getInt(sc, mensaje + Metodos.TABLAS);
 
 		switch (numeroDeLaTabla) {
 		case 1:
@@ -68,16 +69,17 @@ public class Metodos {
 		}
 		consulta += ");";
 		return consulta;
-	}
+	}	
 
 	public static void mostrarDatos(Connection connection, Scanner sc, String mensaje) {
-		String tabla = Metodos.elegirTabla(sc);
+		String tabla = Metodos.elegirTabla(sc, mensaje);
 		if (tabla == null) {
 			System.out.println("No existe esa tabla.");
 			return;
 		}
-		
 		String consulta = "select * from " + tabla;
+		
+		
 		try {
 			PreparedStatement ps = connection.prepareStatement(consulta);
 			ResultSet res = ps.executeQuery();
@@ -116,7 +118,7 @@ public class Metodos {
 	}
 
 	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
-		String tabla = Metodos.elegirTabla(sc);
+		String tabla = Metodos.elegirTabla(sc, mensaje);
 		String[] insertValues = null;
 		
 		switch (tabla) {
@@ -136,11 +138,11 @@ public class Metodos {
 	}
 
 	public static void modificarDatos(Connection connection, Scanner sc, String mensaje) {
-		String tabla = Metodos.elegirTabla(sc);
+		String tabla = Metodos.elegirTabla(sc, mensaje);
 	}
 
 	public static void eliminarDatos(Connection connection, Scanner sc, String mensaje) {
-		String tabla = Metodos.elegirTabla(sc);
+		String tabla = Metodos.elegirTabla(sc, mensaje);
 	}
 
 }
