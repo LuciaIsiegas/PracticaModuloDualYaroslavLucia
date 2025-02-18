@@ -129,7 +129,6 @@ public class Metodos {
 		}
 		consulta += ");";
 		return consulta;
-<<<<<<< HEAD
 	}	
 
 	public static void mostrarDatos(Connection connection, Scanner sc, String mensaje) {
@@ -192,7 +191,6 @@ public class Metodos {
 		case "jugadores":
 			insertValues = Jugadores.cogerDatos(sc);
 			consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
->>>>>>> yaroslav
 			break;
 		case "equipos":
 
@@ -201,11 +199,8 @@ public class Metodos {
 
 			break;
 		}
-<<<<<<< HEAD
-=======
 		
 		Metodos.ejecutarConsultaDeAccion(connection, consultaFinal);
->>>>>>> yaroslav
 	}
 
 	public static void modificarDatos(Connection connection, Scanner sc, String mensaje) {
