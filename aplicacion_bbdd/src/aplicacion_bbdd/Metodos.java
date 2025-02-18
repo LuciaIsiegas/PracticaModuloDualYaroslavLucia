@@ -50,6 +50,29 @@ public class Metodos {
 		}
 	}
 	
+	public static ResultSet ejecutarConsultaDeSeleccion(Connection conexion, String consulta)
+	{
+		PreparedStatement sentencia;
+		try {
+			sentencia = conexion.prepareStatement(consulta);
+			ResultSet resultado = sentencia.executeQuery();
+			return resultado;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static void ejecutarConsultaDeAccion(Connection conexion, String consulta)
+	{
+		PreparedStatement sentencia;
+		try {
+			sentencia = conexion.prepareStatement(consulta);
+			sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static int getInt(Scanner sc, String mensaje) {
 		boolean correcto = false;
@@ -107,22 +130,16 @@ public class Metodos {
 	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc);
 		String[] insertValues = null;
+		String consultaFinal = null;
 		
 		switch (tabla) {
 		case "estadisticas":
 			insertValues = Estadisticas.cogerDatos(sc);
-			String consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
-			try {
-				PreparedStatement sentencia = connection.prepareStatement(consultaFinal);
-				sentencia.executeUpdate();
-				
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
 			break;
 		case "jugadores":
-
+			insertValues = Jugadores.cogerDatos(sc);
+			consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
 			break;
 		case "equipos":
 
@@ -131,6 +148,8 @@ public class Metodos {
 
 			break;
 		}
+		
+		Metodos.ejecutarConsultaDeAccion(connection, consultaFinal);
 	}
 
 	public static void modificarDatos(Connection connection, Scanner sc, String mensaje) {

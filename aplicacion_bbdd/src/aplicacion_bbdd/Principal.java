@@ -16,7 +16,7 @@ public class Principal {
 			
 			int opcion = 0;
 			do {
-				opcion = Metodos.getInt(sc,Metodos. MENU + "\nTu opcion: ");
+				opcion = Metodos.getInt(sc, Metodos. MENU + "\nTu opcion: ");
 				
 				
 				switch (opcion) {
