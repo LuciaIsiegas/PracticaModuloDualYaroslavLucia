@@ -179,7 +179,7 @@ public class Metodos {
 
 
 	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
-		String tabla = Metodos.elegirTabla(sc);
+		String tabla = Metodos.elegirTabla(sc, mensaje);
 		String[] insertValues = null;
 		String consultaFinal = null;
 		
