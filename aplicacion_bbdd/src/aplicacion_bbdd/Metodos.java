@@ -23,6 +23,66 @@ public class Metodos {
 			+ "4. Partidos\n"
 			+ "Elige la tabla: ";
 
+	public static boolean isInt(String num)
+	{
+		try
+		{
+			Integer.parseInt(num);
+			return true;
+		} catch(NumberFormatException e)
+		{
+			return false;
+		}
+	}
+	
+	public static boolean isDouble(String num)
+	{
+		try
+		{
+			Double.parseDouble(num);
+			return true;
+		} catch(NumberFormatException e)
+		{
+			return false;
+		}
+	}
+	
+	public static boolean isFloat(String num)
+	{
+		try
+		{
+			Float.parseFloat(num);
+			return true;
+		} catch(NumberFormatException e)
+		{
+			return false;
+		}
+	}
+	
+	public static ResultSet ejecutarConsultaDeSeleccion(Connection conexion, String consulta)
+	{
+		PreparedStatement sentencia;
+		try {
+			sentencia = conexion.prepareStatement(consulta);
+			ResultSet resultado = sentencia.executeQuery();
+			return resultado;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static void ejecutarConsultaDeAccion(Connection conexion, String consulta)
+	{
+		PreparedStatement sentencia;
+		try {
+			sentencia = conexion.prepareStatement(consulta);
+			sentencia.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static int getInt(Scanner sc, String mensaje) {
 		boolean correcto = false;
 		int num = 0;
@@ -69,6 +129,7 @@ public class Metodos {
 		}
 		consulta += ");";
 		return consulta;
+<<<<<<< HEAD
 	}	
 
 	public static void mostrarDatos(Connection connection, Scanner sc, String mensaje) {
@@ -117,16 +178,21 @@ public class Metodos {
 		}
 	}
 
+
 	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
-		String tabla = Metodos.elegirTabla(sc, mensaje);
+		String tabla = Metodos.elegirTabla(sc);
 		String[] insertValues = null;
+		String consultaFinal = null;
 		
 		switch (tabla) {
 		case "estadisticas":
-
+			insertValues = Estadisticas.cogerDatos(sc);
+			consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
 			break;
 		case "jugadores":
-
+			insertValues = Jugadores.cogerDatos(sc);
+			consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
+>>>>>>> yaroslav
 			break;
 		case "equipos":
 
@@ -135,6 +201,11 @@ public class Metodos {
 
 			break;
 		}
+<<<<<<< HEAD
+=======
+		
+		Metodos.ejecutarConsultaDeAccion(connection, consultaFinal);
+>>>>>>> yaroslav
 	}
 
 	public static void modificarDatos(Connection connection, Scanner sc, String mensaje) {
