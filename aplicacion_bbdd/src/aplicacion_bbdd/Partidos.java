@@ -1,16 +1,13 @@
 package aplicacion_bbdd;
 
-<<<<<<< HEAD
+import java.util.Scanner;
+
 public class Partidos {
 	
 	public static final String CAMPOCLAVE = "codigo";
 	public static final String FOREINGKEYLOCAL = "equipo_local";
 	public static final String FOREINGKEYVISITANTE = "equipo_visitante";
-=======
-import java.util.Scanner;
->>>>>>> main
-
-public class Partidos {
+	
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;

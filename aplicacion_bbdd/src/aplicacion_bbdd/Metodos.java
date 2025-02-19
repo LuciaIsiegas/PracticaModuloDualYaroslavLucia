@@ -180,84 +180,57 @@ public class Metodos {
 		consulta += ");";
 		return consulta;
 	}	
-
-	public static void mostrarDatos(Connection connection, Scanner sc, String mensaje) {
+	
+	public static String mostrar1Tabla(Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc, mensaje);
 		if (tabla == null) {
 			System.out.println("No existe esa tabla.");
-			return;
+			return null;
 		}
-		String consulta = "select * from " + tabla;
-		
-		
-		try {
-			PreparedStatement ps = connection.prepareStatement(consulta);
-			ResultSet res = ps.executeQuery();
-			ResultSetMetaData rmd = res.getMetaData();
-			
-			// ENCABEZADO
-			int columnas = rmd.getColumnCount();
-			for (int i = 1; i <= columnas; i++) {
-				if (i == 1) {
-					System.out.printf("%15s", rmd.getColumnName(i));
-				} else {
-					System.out.printf("%25s", rmd.getColumnName(i));
-				}
-			}
-			System.out.println();
-			for (int j = 0; j < columnas*25; j++) {
-				System.out.print("*");
-			}
-			System.out.println();
-			
-			// DATOS
-			while (res.next()) {
-				for (int k = 1; k <= columnas; k++) {
-					if (k == 1) {
-						System.out.printf("%15s", res.getString(k));
-					} else {
-						System.out.printf("%25s", res.getString(k));
-					}
-					
-				}
-				System.out.println();
-			}
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
-		}
+		return "select * from " + tabla;
 	}
 	
-	public static boolean existeRelacion(String tabla1, String tabla2) {
+	public static String mostrar2Tablas(Scanner sc, String mensaje) {
+		String tabla1 = Metodos.elegirTabla(sc, "Escoge las primera tabla:\n");
+		System.out.println();
+		String tabla2 = Metodos.elegirTabla(sc, "Escoge la segunda tabla:\n");
+		String join = joinTablas(sc, tabla1, tabla2);
+		if (tabla2 == null || tabla1 == null || join == null) {
+			System.out.println("No existe relacion entre esas tablas.");
+			return null;
+		}
+		return "select * from " + tabla1 + " join " + tabla2 + " on " + join;
+	}
+	
+	public static String joinTablas(Scanner sc, String tabla1, String tabla2) {
 		if ((tabla1.equals("estadisticas") && tabla2.equals("jugadores"))
 				|| (tabla2.equals("estadisticas") && tabla1.equals("jugadores"))) {
-			return true;
+			return "estadisticas.jugador=jugadores.codigo";
 		} else if ((tabla1.equals("jugadores") && tabla2.equals("equipos"))
 				|| (tabla1.equals("equipos") && tabla2.equals("jugadores"))){
-			return true;
+			return "jugadores.nombre_equipo=equipos.nombre";
 		} else if ((tabla1.equals("equipos") && tabla2.equals("partidos"))
 				|| (tabla1.equals("partidos") && tabla2.equals("equipos"))) {
-			return true;
+			System.out.print("¿Equipo local(1) o vistante(2)?: ");
+			String aux = sc.nextLine();
+			if (aux.equals("1")) {
+				return "equipos.nombre=partidos.equipo_local";
+			} else if (aux.equals("2")) {
+				return "equipos.nombre=partidos.equipo_visitante";
+			} else {
+				return null;
+			}
 		} else {
-			return false;
+			return null;
 		}
 	}
-	
-	public static void mostrarDatos2Tablas(Connection connection, Scanner sc, String mensaje) {
-		String tabla1 = Metodos.elegirTabla(sc, "Escoge las primera tabla:\n");
-		String tabla2 = Metodos.elegirTabla(sc, "Escoge la segunda tabla:\n");
-		if (tabla2 == null || tabla1 == null || !existeRelacion(tabla1, tabla2)) {
-			System.out.println("No existe relacion entre esas tablas.");
+
+	public static void mostrarDatos(Connection connection, String consulta) {
+		if (consulta == null) {
 			return;
 		}
-		
-		
-		
-		String consulta = "select * from " + tabla1 + " join " ;
-		
-		
 		try {
-			PreparedStatement ps = connection.prepareStatement(consulta);
-			ResultSet res = ps.executeQuery();
+			ResultSet res = ejecutarConsultaDeSeleccion(connection, consulta);
 			ResultSetMetaData rmd = res.getMetaData();
 			
 			// ENCABEZADO
@@ -291,8 +264,8 @@ public class Metodos {
 			sqle.printStackTrace();
 		}
 	}
-
-
+	
+	
 
 	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc, mensaje);

@@ -22,12 +22,11 @@ public class Principal {
 				switch (opcion) {
 				case 1:
 					String opcion1 = "\nMostrar datos de:\n";
-					Metodos.mostrarDatos(conexion, sc, opcion1);
-					
+					Metodos.mostrarDatos(conexion, Metodos.mostrar1Tabla(sc, opcion1));
 					break;
 				case 2:
 					String opcion12 = "\nMostrar datos de:\n";
-					
+					Metodos.mostrarDatos(conexion, Metodos.mostrar2Tablas(sc, opcion12));
 					break;
 				case 3:
 					String opcion2 = "\nDar de alta datos en:\n";
