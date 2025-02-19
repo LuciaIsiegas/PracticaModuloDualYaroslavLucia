@@ -9,8 +9,8 @@ public class Jugadores {
 		System.out.println("");
 		do {
 			Jugadores.printColumnas();
-			System.out.print("Introduce datos separados por espacio: ");
-			tokens = sc.nextLine().split(" ");
+			System.out.print("Introduce los datos entre comillas simples: ");
+			tokens = Metodos.tokenize(sc.nextLine());
 			if (!Jugadores.validarTokens(tokens)) {
 				System.out.println("Formato incorrecto");
 				continue;

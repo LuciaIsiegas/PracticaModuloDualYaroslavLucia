@@ -1,6 +1,6 @@
 package aplicacion_bbdd;
 
-import java.util.Scanner;
+import java.util.*;
 import java.sql.*;
 
 public class Metodos {
@@ -57,6 +57,49 @@ public class Metodos {
 		{
 			return false;
 		}
+	}
+	
+	public static String[] tokenize(String cadena)
+	{
+		String[] tokens = new String[1];
+		String token = null;
+		boolean dentroToken = false;
+		int tokensCount = 0;
+		for(int i = 0; i < cadena.length(); i++)
+		{
+			if(dentroToken)
+			{
+				if(cadena.charAt(i) == '\'')
+				{
+					dentroToken = false;
+					if(tokensCount + 1 > tokens.length)
+					{
+						String[] newBuffer = new String[tokensCount + 1];
+						for(int j = 0; j < tokens.length; j++)
+						{
+							newBuffer[j] = tokens[j];
+						}
+						tokens = newBuffer;
+					}
+					
+					tokens[tokensCount++] = token;
+					token = null;
+				} else
+				{
+					token += cadena.charAt(i);
+				}
+					
+			} else
+			{
+				if(cadena.charAt(i) == '\'')
+				{
+					dentroToken = true;
+					token = new String();
+				}
+			}
+		}
+		
+		return tokens;
 	}
 	
 	public static ResultSet ejecutarConsultaDeSeleccion(Connection conexion, String consulta)
@@ -123,7 +166,13 @@ public class Metodos {
 	public static String prepararConsultaInsert(String[] values, String tabla) {
 		String consulta = "insert into " + tabla + " values (";
 		for (int i = 0; i < values.length; i++) {
-			consulta += "'" + values[i] + "'";
+			if(values[i].equals(""))
+			{
+				consulta += "null";
+			} else
+			{
+				consulta += "'" + values[i] + "'";
+			}
 			if (i != values.length - 1)
 				consulta += ",";
 		}
