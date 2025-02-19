@@ -235,20 +235,18 @@ public class Metodos {
 		switch (tabla) {
 		case "estadisticas":
 			insertValues = Estadisticas.cogerDatos(sc);
-			consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
 			break;
 		case "jugadores":
 			insertValues = Jugadores.cogerDatos(sc);
-			consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
 			break;
 		case "equipos":
-
+			insertValues = Equipos.cogerDatos(sc);
 			break;
 		case "partidos":
-
+			insertValues = Partidos.cogerDatos(sc);
 			break;
 		}
-		
+		consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
 		Metodos.ejecutarConsultaDeAccion(connection, consultaFinal);
 	}
 
