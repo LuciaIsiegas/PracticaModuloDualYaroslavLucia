@@ -22,6 +22,11 @@ public class Metodos {
 			+ "3. Equipos\n" 
 			+ "4. Partidos\n"
 			+ "Elige la tabla: ";
+	static final String RELACIONES = "\nRelaciones disponibles:\n"
+			+ "1. Estadsticas - Jugadores\n"
+			+ "2. Jugadores - Equipos\n"
+			+ "3. Equipos - Partidos\n"
+			+ "Tu elección: ";
 
 	public static boolean isInt(String num)
 	{
@@ -191,44 +196,34 @@ public class Metodos {
 	}
 	
 	public static String mostrar2Tablas(Scanner sc, String mensaje) {
-		String tabla1 = Metodos.elegirTabla(sc, "Escoge las primera tabla:\n");
-		System.out.println();
-		String tabla2 = Metodos.elegirTabla(sc, "Escoge la segunda tabla:\n");
-		String join = joinTablas(sc, tabla1, tabla2);
-		if (tabla2 == null || tabla1 == null || join == null) {
-			System.out.println("No existe relacion entre esas tablas.");
-			return null;
-		}
-		return "select * from " + tabla1 + " join " + tabla2 + " on " + join;
-	}
-	
-	public static String joinTablas(Scanner sc, String tabla1, String tabla2) {
-		if ((tabla1.equals("estadisticas") && tabla2.equals("jugadores"))
-				|| (tabla2.equals("estadisticas") && tabla1.equals("jugadores"))) {
-			return "estadisticas.jugador=jugadores.codigo";
-		} else if ((tabla1.equals("jugadores") && tabla2.equals("equipos"))
-				|| (tabla1.equals("equipos") && tabla2.equals("jugadores"))){
-			return "jugadores.nombre_equipo=equipos.nombre";
-		} else if ((tabla1.equals("equipos") && tabla2.equals("partidos"))
-				|| (tabla1.equals("partidos") && tabla2.equals("equipos"))) {
+		int relacion = getInt(sc, RELACIONES);
+		String join = "";
+		if (relacion == 1) {
+			return "select * from estadisticas join jugadores on estadisticas.jugador=jugadores.codigo";
+		} else if (relacion == 2) {
+			return "select * from jugadores join equipos on jugadores.nombre_equipo=equipos.nombre";
+		} else if (relacion == 3) {
 			System.out.print("¿Equipo local(1) o vistante(2)?: ");
 			String aux = sc.nextLine();
 			if (aux.equals("1")) {
-				return "equipos.nombre=partidos.equipo_local";
+				join = "equipos.nombre=partidos.equipo_local";
 			} else if (aux.equals("2")) {
-				return "equipos.nombre=partidos.equipo_visitante";
+				join = "equipos.nombre=partidos.equipo_visitante";
 			} else {
 				return null;
 			}
+			return "select * from equipos join partidos on " + join;
 		} else {
 			return null;
 		}
 	}
-
-	public static void mostrarDatos(Connection connection, String consulta) {
+	
+	public static void mostrarDatos(Connection connection, String consulta, Scanner sc) {
 		if (consulta == null) {
+			System.out.println("Opción no disponible.");
 			return;
 		}
+		
 		try {
 			ResultSet res = ejecutarConsultaDeSeleccion(connection, consulta);
 			ResultSetMetaData rmd = res.getMetaData();
@@ -249,6 +244,7 @@ public class Metodos {
 			System.out.println();
 			
 			// DATOS
+			int contador = 1;
 			while (res.next()) {
 				for (int k = 1; k <= columnas; k++) {
 					if (k == 1) {
@@ -256,9 +252,18 @@ public class Metodos {
 					} else {
 						System.out.printf("%25s", res.getString(k));
 					}
-					
 				}
 				System.out.println();
+				
+				if (contador % 250 == 0) {
+					String cadena = "";
+					System.out.print("Para parar 'fin': ");
+					cadena = sc.nextLine();
+					if (cadena.equalsIgnoreCase("fin")) {
+						break;
+					}
+				}
+				contador++;
 			}
 		} catch (SQLException sqle) {
 			sqle.printStackTrace();
