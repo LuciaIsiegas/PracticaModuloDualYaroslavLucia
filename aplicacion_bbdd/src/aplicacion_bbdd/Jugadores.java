@@ -3,6 +3,10 @@ package aplicacion_bbdd;
 import java.util.Scanner;
 
 public class Jugadores {
+	
+	public static final String CAMPOCLAVE = "codigo";
+	public static final String FOREINGKEY = "nombre_equipo";
+	
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;

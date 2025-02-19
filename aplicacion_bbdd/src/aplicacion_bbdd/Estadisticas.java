@@ -3,6 +3,10 @@ package aplicacion_bbdd;
 import java.util.Scanner;
 
 public class Estadisticas {
+	
+	public static final String CAMPOCLAVE = "temporada";
+	public static final String FOREINGKEY = "jugador";
+	
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
