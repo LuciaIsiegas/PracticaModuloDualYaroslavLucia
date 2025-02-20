@@ -1,12 +1,12 @@
 package aplicacion_bbdd;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Jugadores {
-
+	
 	public static final String CAMPOCLAVE = "codigo";
-	public static final String FOREINGKEY = "nombre_equipo";
-
+	
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
@@ -21,32 +21,19 @@ public class Jugadores {
 			}
 			hayDatos = true;
 		} while (!hayDatos);
-
+		
 		return tokens;
 	}
 
 	private static void printColumnas() {
-		System.out.println("Columns:\n" + "codigo -> int(11) PK\n" + "Nombre -> varchar(30)\n"
-				+ "Procedencia -> varchar(20)\n" + "Altura -> varchar(4)\n" + "Peso -> int(11)\n"
-				+ "Posicion -> varchar(5)\n" + "Nombre_equipo -> varchar(20)");
-	}
-	
-	public static String[] cogerCamposClaves() {
-		String[] campos = new String[1];
-		campos[0] = "codigo";
-		return campos;
-	}
-
-	public static String[] cogerNombresDeColumnas() {
-		String[] c = new String[7];
-		c[0] = "codigo";
-		c[1] = "Nombre";
-		c[2] = "Procedencia";
-		c[3] = "Altura";
-		c[4] = "Peso";
-		c[5] = "Posicion";
-		c[6] = "Nombre_equipo";
-		return c;
+		System.out.println("Columns:\n"
+				+ "codigo -> int(11) PK\n"
+				+ "Nombre -> varchar(30)\n"
+				+ "Procedencia -> varchar(20)\n"
+				+ "Altura -> varchar(4)\n"
+				+ "Peso -> int(11)\n"
+				+ "Posicion -> varchar(5)\n"
+				+ "Nombre_equipo -> varchar(20)");
 	}
 
 	private static boolean validarTokens(String[] tokens) {
@@ -68,5 +55,31 @@ public class Jugadores {
 			return false;
 
 		return true;
+	}
+	
+	private static boolean validarCampoClave(String dato) {
+		if (dato.length() > 11 || dato.length() == 0) return false;
+		
+		for (int i = 0; i < dato.length(); i++) {
+			char letra = dato.charAt(i);
+			if (!Character.isDigit(letra)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static void eliminarDatos(Connection connection, Scanner sc) {
+		System.out.print("\nElimnar datos de la tabla 'Jugadores'\n"
+				+ "Indica el " + CAMPOCLAVE + " formato 'int(11)': ");
+		String clave = sc.nextLine();
+		
+		if (validarCampoClave(clave)) {
+			String consulta = "delete from jugadores where " + CAMPOCLAVE + " = " + clave;
+			Metodos.ejecutarConsultaDeAccion(connection, consulta);
+			System.out.println("Eliminación de datos completada.");
+		} else {
+			System.out.println("Formato no válido");
+		}
 	}
 }

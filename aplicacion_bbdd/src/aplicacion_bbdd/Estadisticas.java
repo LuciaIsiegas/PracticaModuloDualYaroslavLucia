@@ -1,12 +1,12 @@
 package aplicacion_bbdd;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Estadisticas {
-
+	
 	public static final String CAMPOCLAVE = "temporada";
-	public static final String FOREINGKEY = "jugador";
-
+	
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
@@ -21,7 +21,7 @@ public class Estadisticas {
 			}
 			hayDatos = true;
 		} while (!hayDatos);
-
+		
 		return tokens;
 	}
 
@@ -29,24 +29,6 @@ public class Estadisticas {
 		System.out.println("Columns:\n" + "temporada -> varchar(5) PK\n" + "jugador -> int(11) PK\n"
 				+ "Puntos_por_partido -> float\n" + "Asistencias_por_partido -> float\n"
 				+ "Tapones_por_partido -> float\n" + "Rebotes_por_partido -> float");
-	}
-	
-	public static String[] cogerCamposClaves() {
-		String[] campos = new String[2];
-		campos[0] = "temporada";
-		campos[1] = "jugador";
-		return campos;
-	}
-
-	public static String[] cogerNombresDeColumnas() {
-		String[] c = new String[6];
-		c[0] = "temporada";
-		c[1] = "jugador";
-		c[2] = "Puntos_por_partido";
-		c[3] = "Asistencias_por_partido";
-		c[4] = "Tapones_por_partido";
-		c[5] = "Rebotes_por_partido";
-		return c;
 	}
 
 	private static boolean validarTokens(String[] tokens) {
@@ -66,5 +48,33 @@ public class Estadisticas {
 			return false;
 
 		return true;
+	}
+	
+	private static boolean validarCampoClave(String dato) {
+		if (dato.length() > 5 || dato.length() == 0) return false;
+		
+		for (int i = 0; i < dato.length(); i++) {
+			char letra = dato.charAt(i);
+			if (!Character.isDigit(letra) && i != 2) {
+				return false;
+			} else if (i == 2 && letra != '/') {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static void eliminarDatos(Connection connection, Scanner sc) {
+		System.out.print("\nElimnar datos de la tabla 'Estadisticas'\n"
+				+ "Indica la " + CAMPOCLAVE + " formato '00/00': ");
+		String clave = sc.nextLine();
+		
+		if (validarCampoClave(clave)) {
+			String consulta = "delete from estadisticas where " + CAMPOCLAVE + " like '" + clave + "'";
+			Metodos.ejecutarConsultaDeAccion(connection, consulta);
+			System.out.println("Eliminación de datos completada.");
+		} else {
+			System.out.println("Formato no válido");
+		}
 	}
 }
