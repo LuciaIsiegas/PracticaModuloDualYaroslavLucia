@@ -6,127 +6,124 @@ import java.sql.*;
 public class Metodos {
 
 	static final String BBDD = "jdbc:mysql://localhost:3306/nba";
+	static final String BBDD_NEW = "jdbc:mysql://localhost:3306";
 	static final String USER = "root";
-	static final String MENU = "_______________________________________________\n" 
-			+ "Menú de opciones\n"
-			+ "_______________________________________________\n" 
-			+ "1- Mostrar datos\n" 
-			+ "2- Mostrar datos de dos tablas relacionadas\n"
-			+ "3- Alta de datos\n"
-			+ "4- Modificar datos\n" 
-			+ "5- Eliminar datos\n" 
-			+ "6- Salir\n"
-			+ "_______________________________________________";
-	static final String TABLAS = "1. Estadisticas\n" 
-			+ "2. Jugadores\n" 
-			+ "3. Equipos\n" 
-			+ "4. Partidos\n"
+	static final String BASE_NOMBRE = "nba";
+	static final String MENU = "Menú de opciones\n" + "_______________________________________________\n"
+			+ "1- Crear la base\n" + "2- Conectar a la base\n" + "3- Eliminar la base\n" + "4- Mostrar datos\n"
+			+ "5- Mostrar datos de dos tablas relacionadas\n" + "6- Alta de datos\n" + "7- Modificar datos\n"
+			+ "8- Eliminar datos\n" + "9- Salir\n";
+	static final String TABLAS = "1. Estadisticas\n" + "2. Jugadores\n" + "3. Equipos\n" + "4. Partidos\n"
 			+ "Elige la tabla: ";
 
-	public static boolean isInt(String num)
-	{
-		try
-		{
+	public static boolean isInt(String num) {
+		try {
 			Integer.parseInt(num);
 			return true;
-		} catch(NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			return false;
 		}
 	}
-	
-	public static boolean isDouble(String num)
-	{
-		try
-		{
+
+	public static boolean isDouble(String num) {
+		try {
 			Double.parseDouble(num);
 			return true;
-		} catch(NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			return false;
 		}
 	}
-	
-	public static boolean isFloat(String num)
-	{
-		try
-		{
+
+	public static boolean isFloat(String num) {
+		try {
 			Float.parseFloat(num);
 			return true;
-		} catch(NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			return false;
 		}
 	}
-	
 
-	public static String[] tokenize(String cadena)
-	{
-		String[] tokens = new String[1];
+	public static String[] tokenize(String cadena) {
+		String[] tokens = new String[0];
 		String token = null;
 		boolean dentroToken = false;
 		int tokensCount = 0;
-		for(int i = 0; i < cadena.length(); i++)
-		{
-			if(dentroToken)
-			{
-				if(cadena.charAt(i) == '\'')
-				{
+		for (int i = 0; i < cadena.length(); i++) {
+			if (dentroToken) {
+				if (cadena.charAt(i) == '\'') {
 					dentroToken = false;
-					if(tokensCount + 1 > tokens.length)
-					{
+					if (tokensCount + 1 > tokens.length) {
 						String[] newBuffer = new String[tokensCount + 1];
-						for(int j = 0; j < tokens.length; j++)
-						{
+						for (int j = 0; j < tokens.length; j++) {
 							newBuffer[j] = tokens[j];
 						}
 						tokens = newBuffer;
 					}
-					
+
 					tokens[tokensCount++] = token;
 					token = null;
-				} else
-				{
+				} else {
 					token += cadena.charAt(i);
 				}
-					
-			} else
-			{
-				if(cadena.charAt(i) == '\'')
-				{
+
+			} else {
+				if (cadena.charAt(i) == '\'') {
 					dentroToken = true;
 					token = new String();
 				}
 			}
 		}
-		
+
 		return tokens;
 	}
-	
-	public static ResultSet ejecutarConsultaDeSeleccion(Connection conexion, String consulta)
-	{
+
+	public static String[] parseOperaciones(String sqlScript) {
+		String[] operaciones = new String[0];
+		String operacion = new String();
+		int opCount = 0;
+
+		for (int i = 0; i < sqlScript.length(); i++) {
+			if (sqlScript.charAt(i) == ';') {
+				if (opCount + 1 > operaciones.length) {
+					String[] newBuffer = new String[opCount + 1];
+					for (int j = 0; j < operaciones.length; j++) {
+						newBuffer[j] = operaciones[j];
+					}
+					operaciones = newBuffer;
+				}
+
+				operaciones[opCount++] = operacion;
+				operacion = new String();
+			} else {
+				operacion += sqlScript.charAt(i);
+			}
+		}
+
+		return operaciones;
+	}
+
+	public static ResultSet ejecutarConsultaDeSeleccion(Connection conexion, String consulta) {
 		PreparedStatement sentencia;
 		try {
 			sentencia = conexion.prepareStatement(consulta);
 			ResultSet resultado = sentencia.executeQuery();
 			return resultado;
 		} catch (SQLException e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
-	
-	public static void ejecutarConsultaDeAccion(Connection conexion, String consulta)
-	{
+
+	public static boolean ejecutarConsultaDeAccion(Connection conexion, String consulta) {
 		PreparedStatement sentencia;
 		try {
 			sentencia = conexion.prepareStatement(consulta);
 			sentencia.executeUpdate();
+			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return false;
 		}
 	}
-	
+
 	public static int getInt(Scanner sc, String mensaje) {
 		boolean correcto = false;
 		int num = 0;
@@ -158,20 +155,19 @@ public class Metodos {
 		}
 	}
 
-	public static boolean validarDatosParaConsulta(String str)
-	{
-		if(str.contains(";")) return false;
-		else return true;
+	public static boolean validarDatosParaConsulta(String str) {
+		if (str.contains(";"))
+			return false;
+		else
+			return true;
 	}
-	
+
 	public static String prepararConsultaInsert(String[] values, String tabla) {
 		String consulta = "insert into " + tabla + " values (";
 		for (int i = 0; i < values.length; i++) {
-			if(values[i].equals(""))
-			{
+			if (values[i].equals("")) {
 				consulta += "null";
-			} else
-			{
+			} else {
 				consulta += "'" + values[i] + "'";
 			}
 			if (i != values.length - 1)
@@ -179,8 +175,8 @@ public class Metodos {
 		}
 		consulta += ");";
 		return consulta;
-	}	
-	
+	}
+
 	public static String mostrar1Tabla(Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc, mensaje);
 		if (tabla == null) {
@@ -189,7 +185,7 @@ public class Metodos {
 		}
 		return "select * from " + tabla;
 	}
-	
+
 	public static String mostrar2Tablas(Scanner sc, String mensaje) {
 		String tabla1 = Metodos.elegirTabla(sc, "Escoge las primera tabla:\n");
 		System.out.println();
@@ -201,13 +197,13 @@ public class Metodos {
 		}
 		return "select * from " + tabla1 + " join " + tabla2 + " on " + join;
 	}
-	
+
 	public static String joinTablas(Scanner sc, String tabla1, String tabla2) {
 		if ((tabla1.equals("estadisticas") && tabla2.equals("jugadores"))
 				|| (tabla2.equals("estadisticas") && tabla1.equals("jugadores"))) {
 			return "estadisticas.jugador=jugadores.codigo";
 		} else if ((tabla1.equals("jugadores") && tabla2.equals("equipos"))
-				|| (tabla1.equals("equipos") && tabla2.equals("jugadores"))){
+				|| (tabla1.equals("equipos") && tabla2.equals("jugadores"))) {
 			return "jugadores.nombre_equipo=equipos.nombre";
 		} else if ((tabla1.equals("equipos") && tabla2.equals("partidos"))
 				|| (tabla1.equals("partidos") && tabla2.equals("equipos"))) {
@@ -232,7 +228,7 @@ public class Metodos {
 		try {
 			ResultSet res = ejecutarConsultaDeSeleccion(connection, consulta);
 			ResultSetMetaData rmd = res.getMetaData();
-			
+
 			// ENCABEZADO
 			int columnas = rmd.getColumnCount();
 			for (int i = 1; i <= columnas; i++) {
@@ -243,11 +239,11 @@ public class Metodos {
 				}
 			}
 			System.out.println();
-			for (int j = 0; j < columnas*25; j++) {
+			for (int j = 0; j < columnas * 25; j++) {
 				System.out.print("*");
 			}
 			System.out.println();
-			
+
 			// DATOS
 			while (res.next()) {
 				for (int k = 1; k <= columnas; k++) {
@@ -256,7 +252,7 @@ public class Metodos {
 					} else {
 						System.out.printf("%25s", res.getString(k));
 					}
-					
+
 				}
 				System.out.println();
 			}
@@ -264,14 +260,12 @@ public class Metodos {
 			sqle.printStackTrace();
 		}
 	}
-	
-	
 
 	public static void altaDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc, mensaje);
 		String[] insertValues = null;
 		String consultaFinal = null;
-		
+
 		switch (tabla) {
 		case "estadisticas":
 			insertValues = Estadisticas.cogerDatos(sc);
@@ -296,6 +290,34 @@ public class Metodos {
 
 	public static void eliminarDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc, mensaje);
+	}
+
+	public static String crearLaBase(Connection connection, String mensaje) {
+		System.out.println("Estamos creandolo");
+		String[] operaciones = Metodos.parseOperaciones(BaseDeDatos.CREACION);
+
+		for (String op : operaciones) {
+			Metodos.ejecutarConsultaDeAccion(connection, op);
+		}
+		return Metodos.BASE_NOMBRE;
+	}
+
+	public static String conectarBase(Connection connection, String message) {
+		System.out.println(message);
+
+		String consulta = "use " + Metodos.BASE_NOMBRE + ";";
+		boolean result = Metodos.ejecutarConsultaDeAccion(connection, consulta);
+		if (!result) {
+			System.out.println("No se puede conectar a una base innexistente");
+		}
+		return result == true ? Metodos.BASE_NOMBRE : "";
+	}
+
+	public static String eliminarBase(Connection connection, String message) {
+		System.out.println(message);
+		String consulta = "drop database " + Metodos.BASE_NOMBRE + ";";
+		Metodos.ejecutarConsultaDeAccion(connection, consulta);
+		return "";
 	}
 
 }
