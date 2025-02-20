@@ -176,6 +176,63 @@ public class Metodos {
 		consulta += ");";
 		return consulta;
 	}
+	
+	public static boolean esCampoClave(String colName, String[] camposClaves)
+	{
+		for(int i = 0; i < camposClaves.length; i++)
+		{
+			if(colName.equals(camposClaves[i]))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static int numeroDeValue(String colName, String[] col)
+	{
+		for(int i = 0; i < col.length; i++)
+		{
+			if(colName.equals(col[i]))
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public static String prepararConsultaUpdate(String[] values, String tabla, String[] camposClaves, String[] col)
+	{
+		String consulta = "update " + tabla + " set ";
+		for(int i = 0; i < values.length; i++)
+		{
+			
+			boolean esCampo = Metodos.esCampoClave(col[i], camposClaves);
+			if(esCampo) continue;
+			
+			consulta += col[i] + " = ";
+			if(values[i].equals(""))
+			{
+				consulta += "null";
+			}
+			consulta += "'" + values[i] + "'";
+			if(i != values.length - 1)
+				consulta += ", ";
+		}
+		
+		consulta += "where ";
+		for(int i = 0; i < camposClaves.length; i++)
+		{
+			consulta += camposClaves[i] + " = " + "'" + values[Metodos.numeroDeValue(camposClaves[i], col)] + "'";
+			if(i != camposClaves.length - 1)
+			{
+				consulta += " and ";
+			}
+		}
+		consulta += ";";
+		System.out.println(consulta);
+		return consulta;
+	}
 
 	public static String mostrar1Tabla(Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc, mensaje);
@@ -281,11 +338,48 @@ public class Metodos {
 			break;
 		}
 		consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
-		Metodos.ejecutarConsultaDeAccion(connection, consultaFinal);
+		boolean result = Metodos.ejecutarConsultaDeAccion(connection, consultaFinal);
+		if(!result)
+		{
+			System.out.println("Tienes un error en tu consulta");
+		}
 	}
 
 	public static void modificarDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc, mensaje);
+		String[] modificarValues = null;
+		String[] camposClaves = null;
+		String[] columnas = null;
+		String consultaFinal = null;
+
+		switch (tabla) {
+		case "estadisticas":
+			modificarValues = Estadisticas.cogerDatos(sc);
+			camposClaves = Estadisticas.cogerCamposClaves();
+			columnas = Estadisticas.cogerNombresDeColumnas();
+			break;
+		case "jugadores":
+			modificarValues = Jugadores.cogerDatos(sc);
+			camposClaves = Jugadores.cogerCamposClaves();
+			columnas = Jugadores.cogerNombresDeColumnas();
+			break;
+		case "equipos":
+			modificarValues = Equipos.cogerDatos(sc);
+			camposClaves = Equipos.cogerCamposClaves();
+			columnas = Equipos.cogerNombresDeColumnas();
+			break;
+		case "partidos":
+			modificarValues = Partidos.cogerDatos(sc);
+			camposClaves = Partidos.cogerCamposClaves();
+			columnas = Partidos.cogerNombresDeColumnas();
+			break;
+		}
+		consultaFinal = Metodos.prepararConsultaUpdate(modificarValues, tabla, camposClaves, columnas);
+		boolean result = Metodos.ejecutarConsultaDeAccion(connection, consultaFinal);
+		if(!result)
+		{
+			System.out.println("Tienes un error en tu consulta");
+		}
 	}
 
 	public static void eliminarDatos(Connection connection, Scanner sc, String mensaje) {

@@ -30,6 +30,24 @@ public class Jugadores {
 				+ "Procedencia -> varchar(20)\n" + "Altura -> varchar(4)\n" + "Peso -> int(11)\n"
 				+ "Posicion -> varchar(5)\n" + "Nombre_equipo -> varchar(20)");
 	}
+	
+	public static String[] cogerCamposClaves() {
+		String[] campos = new String[1];
+		campos[0] = "codigo";
+		return campos;
+	}
+
+	public static String[] cogerNombresDeColumnas() {
+		String[] c = new String[7];
+		c[0] = "codigo";
+		c[1] = "Nombre";
+		c[2] = "Procedencia";
+		c[3] = "Altura";
+		c[4] = "Peso";
+		c[5] = "Posicion";
+		c[6] = "Nombre_equipo";
+		return c;
+	}
 
 	private static boolean validarTokens(String[] tokens) {
 		if (tokens.length != 7)

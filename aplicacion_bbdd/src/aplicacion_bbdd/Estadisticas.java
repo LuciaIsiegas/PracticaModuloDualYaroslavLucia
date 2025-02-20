@@ -30,6 +30,24 @@ public class Estadisticas {
 				+ "Puntos_por_partido -> float\n" + "Asistencias_por_partido -> float\n"
 				+ "Tapones_por_partido -> float\n" + "Rebotes_por_partido -> float");
 	}
+	
+	public static String[] cogerCamposClaves() {
+		String[] campos = new String[2];
+		campos[0] = "temporada";
+		campos[1] = "jugador";
+		return campos;
+	}
+
+	public static String[] cogerNombresDeColumnas() {
+		String[] c = new String[6];
+		c[0] = "temporada";
+		c[1] = "jugador";
+		c[2] = "Puntos_por_partido";
+		c[3] = "Asistencias_por_partido";
+		c[4] = "Tapones_por_partido";
+		c[5] = "Rebotes_por_partido";
+		return c;
+	}
 
 	private static boolean validarTokens(String[] tokens) {
 		if (tokens.length != 6)

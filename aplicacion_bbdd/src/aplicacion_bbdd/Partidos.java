@@ -31,6 +31,23 @@ public class Partidos {
 				+ "equipo_visitante -> varchar(20)\n" + "puntos_local -> int(11)\n" + "puntos_visitante -> int(11)\n"
 				+ "temporada -> varchar(5)");
 	}
+	
+	public static String[] cogerCamposClaves() {
+		String[] campos = new String[1];
+		campos[0] = "codigo";
+		return campos;
+	}
+
+	public static String[] cogerNombresDeColumnas() {
+		String[] c = new String[6];
+		c[0] = "codigo";
+		c[1] = "equipo_local";
+		c[2] = "equipo_visitante";
+		c[3] = "puntos_local";
+		c[4] = "puntos_visitante";
+		c[5] = "temporada";
+		return c;
+	}
 
 	private static boolean validarTokens(String[] tokens) {
 		if (tokens.length != 6)
