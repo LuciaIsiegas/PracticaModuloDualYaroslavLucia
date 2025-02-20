@@ -30,6 +30,21 @@ public class Equipos {
 				+ "Conferencia -> varchar(4)\n" + "Division -> varchar(9)");
 	}
 
+	public static String[] cogerCamposClaves() {
+		String[] campos = new String[1];
+		campos[0] = "Nombre";
+		return campos;
+	}
+
+	public static String[] cogerNombresDeColumnas() {
+		String[] c = new String[4];
+		c[0] = "Nombre";
+		c[1] = "Ciudad";
+		c[2] = "Conferencia";
+		c[3] = "Division";
+		return c;
+	}
+
 	private static boolean validarTokens(String[] tokens) {
 		if (tokens.length != 4)
 			return false;
