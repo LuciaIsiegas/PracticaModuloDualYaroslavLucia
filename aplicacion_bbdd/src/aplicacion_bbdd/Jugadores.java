@@ -3,10 +3,10 @@ package aplicacion_bbdd;
 import java.util.Scanner;
 
 public class Jugadores {
-	
+
 	public static final String CAMPOCLAVE = "codigo";
 	public static final String FOREINGKEY = "nombre_equipo";
-	
+
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
@@ -21,19 +21,14 @@ public class Jugadores {
 			}
 			hayDatos = true;
 		} while (!hayDatos);
-		
+
 		return tokens;
 	}
 
 	private static void printColumnas() {
-		System.out.println("Columns:\n"
-				+ "codigo -> int(11) PK\n"
-				+ "Nombre -> varchar(30)\n"
-				+ "Procedencia -> varchar(20)\n"
-				+ "Altura -> varchar(4)\n"
-				+ "Peso -> int(11)\n"
-				+ "Posicion -> varchar(5)\n"
-				+ "Nombre_equipo -> varchar(20)");
+		System.out.println("Columns:\n" + "codigo -> int(11) PK\n" + "Nombre -> varchar(30)\n"
+				+ "Procedencia -> varchar(20)\n" + "Altura -> varchar(4)\n" + "Peso -> int(11)\n"
+				+ "Posicion -> varchar(5)\n" + "Nombre_equipo -> varchar(20)");
 	}
 
 	private static boolean validarTokens(String[] tokens) {

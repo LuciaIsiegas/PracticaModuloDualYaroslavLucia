@@ -3,11 +3,11 @@ package aplicacion_bbdd;
 import java.util.Scanner;
 
 public class Partidos {
-	
+
 	public static final String CAMPOCLAVE = "codigo";
 	public static final String FOREINGKEYLOCAL = "equipo_local";
 	public static final String FOREINGKEYVISITANTE = "equipo_visitante";
-	
+
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
@@ -22,17 +22,13 @@ public class Partidos {
 			}
 			hayDatos = true;
 		} while (!hayDatos);
-		
+
 		return tokens;
 	}
 
 	private static void printColumnas() {
-		System.out.println("Columns:\n"
-				+ "codigo -> int(11) PK\n"
-				+ "equipo_local -> varchar(20)\n"
-				+ "equipo_visitante -> varchar(20)\n"
-				+ "puntos_local -> int(11)\n"
-				+ "puntos_visitante -> int(11)\n"
+		System.out.println("Columns:\n" + "codigo -> int(11) PK\n" + "equipo_local -> varchar(20)\n"
+				+ "equipo_visitante -> varchar(20)\n" + "puntos_local -> int(11)\n" + "puntos_visitante -> int(11)\n"
 				+ "temporada -> varchar(5)");
 	}
 
