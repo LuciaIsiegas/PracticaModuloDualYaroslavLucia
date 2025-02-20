@@ -1,11 +1,11 @@
 package aplicacion_bbdd;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Equipos {
 	
 	public static final String CAMPOCLAVE = "nombre";
-	public static final String FOREINGKEY = CAMPOCLAVE;
 	
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
@@ -46,5 +46,24 @@ public class Equipos {
 			return false;
 
 		return true;
+	}
+	
+	private static boolean validarCampoClave(String dato) {
+		if (dato.length() > 20 || dato.length() == 0) return false;
+		return true;
+	}
+	
+	public static void eliminarDatos(Connection connection, Scanner sc) {
+		System.out.print("\nElimnar datos de la tabla 'Equipos'\n"
+				+ "Indica el " + CAMPOCLAVE + " formato 'varchar(20)': ");
+		String clave = sc.nextLine();
+		
+		if (validarCampoClave(clave)) {
+			String consulta = "delete from equipos where " + CAMPOCLAVE + " like '" + clave + "'";
+			Metodos.ejecutarConsultaDeAccion(connection, consulta);
+			System.out.println("Eliminación de datos completada.");
+		} else {
+			System.out.println("Formato no válido");
+		}
 	}
 }

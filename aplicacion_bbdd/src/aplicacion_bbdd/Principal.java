@@ -26,7 +26,7 @@ public class Principal {
 					break;
 				case 2:
 					String opcion12 = "\nMostrar datos de:\n";
-					Metodos.mostrarDatos(conexion, Metodos.mostrar2Tablas(sc, opcion12), sc);
+					Metodos.mostrarDatos(conexion, Metodos.mostrar2Tablas(sc), sc);
 					break;
 				case 3:
 					String opcion2 = "\nDar de alta datos en:\n";

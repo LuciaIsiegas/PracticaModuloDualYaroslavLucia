@@ -1,11 +1,11 @@
 package aplicacion_bbdd;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Estadisticas {
 	
 	public static final String CAMPOCLAVE = "temporada";
-	public static final String FOREINGKEY = "jugador";
 	
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
@@ -48,5 +48,33 @@ public class Estadisticas {
 			return false;
 
 		return true;
+	}
+	
+	private static boolean validarCampoClave(String dato) {
+		if (dato.length() > 5 || dato.length() == 0) return false;
+		
+		for (int i = 0; i < dato.length(); i++) {
+			char letra = dato.charAt(i);
+			if (!Character.isDigit(letra) && i != 2) {
+				return false;
+			} else if (i == 2 && letra != '/') {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static void eliminarDatos(Connection connection, Scanner sc) {
+		System.out.print("\nElimnar datos de la tabla 'Estadisticas'\n"
+				+ "Indica la " + CAMPOCLAVE + " formato '00/00': ");
+		String clave = sc.nextLine();
+		
+		if (validarCampoClave(clave)) {
+			String consulta = "delete from estadisticas where " + CAMPOCLAVE + " like '" + clave + "'";
+			Metodos.ejecutarConsultaDeAccion(connection, consulta);
+			System.out.println("Eliminación de datos completada.");
+		} else {
+			System.out.println("Formato no válido");
+		}
 	}
 }
