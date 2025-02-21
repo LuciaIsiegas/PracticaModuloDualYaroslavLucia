@@ -5,16 +5,18 @@ import java.util.Scanner;
 
 public class Jugadores {
 
-	public static final String CAMPOCLAVE = "codigo";
-
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
 		System.out.println("");
 		do {
 			Jugadores.printColumnas();
-			System.out.print("Introduce los datos entre comillas simples: ");
-			tokens = Metodos.tokenize(sc.nextLine());
+			System.out.print("Introduce los datos entre comillas simples(fin para salir): ");
+			String input = sc.nextLine();
+			if (input.equals("fin"))
+				return null;
+			tokens = Metodos.tokenize(input);
+			
 			if (!Jugadores.validarTokens(tokens)) {
 				System.out.println("Formato incorrecto");
 				continue;
@@ -30,7 +32,7 @@ public class Jugadores {
 				+ "Procedencia -> varchar(20)\n" + "Altura -> varchar(4)\n" + "Peso -> int(11)\n"
 				+ "Posicion -> varchar(5)\n" + "Nombre_equipo -> varchar(20)");
 	}
-	
+
 	public static String[] cogerCamposClaves() {
 		String[] campos = new String[1];
 		campos[0] = "codigo";
@@ -69,10 +71,11 @@ public class Jugadores {
 
 		return true;
 	}
-	
+
 	private static boolean validarCampoClave(String dato) {
-		if (dato.length() > 11 || dato.length() == 0) return false;
-		
+		if (dato.length() > 11 || dato.length() == 0)
+			return false;
+
 		for (int i = 0; i < dato.length(); i++) {
 			char letra = dato.charAt(i);
 			if (!Character.isDigit(letra)) {
@@ -81,14 +84,14 @@ public class Jugadores {
 		}
 		return true;
 	}
-	
+
 	public static void eliminarDatos(Connection connection, Scanner sc) {
-		System.out.print("\nElimnar datos de la tabla 'Jugadores'\n"
-				+ "Indica el " + CAMPOCLAVE + " formato 'int(11)': ");
+		System.out.print(
+				"\nElimnar datos de la tabla 'Jugadores'\n" + "Indica el codigo formato 'int(11)': ");
 		String clave = sc.nextLine();
-		
+
 		if (validarCampoClave(clave)) {
-			String consulta = "delete from jugadores where " + CAMPOCLAVE + " = " + clave;
+			String consulta = "delete from jugadores where codigo = " + clave;
 			Metodos.ejecutarConsultaDeAccion(connection, consulta);
 			System.out.println("Eliminación de datos completada.");
 		} else {

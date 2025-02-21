@@ -15,11 +15,8 @@ public class Metodos {
 			+ "8- Eliminar datos\n" + "9- Salir\n";
 	static final String TABLAS = "1. Estadisticas\n" + "2. Jugadores\n" + "3. Equipos\n" + "4. Partidos\n"
 			+ "Elige la tabla: ";
-	static final String RELACIONES = "\nRelaciones disponibles:\n"
-			+ "1. Estadsticas - Jugadores\n"
-			+ "2. Jugadores - Equipos\n"
-			+ "3. Equipos - Partidos\n"
-			+ "Tu elección: ";
+	static final String RELACIONES = "\nRelaciones disponibles:\n" + "1. Estadsticas - Jugadores\n"
+			+ "2. Jugadores - Equipos\n" + "3. Equipos - Partidos\n" + "Tu elección: ";
 	static final String SETFOREINGKEY = "SET FOREIGN_KEY_CHECKS=0;";
 
 	public static boolean isInt(String num) {
@@ -182,61 +179,50 @@ public class Metodos {
 		consulta += ");";
 		return consulta;
 	}
-	
-	public static boolean esCampoClave(String colName, String[] camposClaves)
-	{
-		for(int i = 0; i < camposClaves.length; i++)
-		{
-			if(colName.equals(camposClaves[i]))
-			{
+
+	public static boolean esCampoClave(String colName, String[] camposClaves) {
+		for (int i = 0; i < camposClaves.length; i++) {
+			if (colName.equals(camposClaves[i])) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	public static int numeroDeValue(String colName, String[] col)
-	{
-		for(int i = 0; i < col.length; i++)
-		{
-			if(colName.equals(col[i]))
-			{
+
+	public static int numeroDeValue(String colName, String[] col) {
+		for (int i = 0; i < col.length; i++) {
+			if (colName.equals(col[i])) {
 				return i;
 			}
 		}
 		return -1;
 	}
-	
-	public static String prepararConsultaUpdate(String[] values, String tabla, String[] camposClaves, String[] col)
-	{
+
+	public static String prepararConsultaUpdate(String[] values, String tabla, String[] camposClaves, String[] col) {
 		String consulta = "update " + tabla + " set ";
-		for(int i = 0; i < values.length; i++)
-		{
-			
+		for (int i = 0; i < values.length; i++) {
+
 			boolean esCampo = Metodos.esCampoClave(col[i], camposClaves);
-			if(esCampo) continue;
-			
+			if (esCampo)
+				continue;
+
 			consulta += col[i] + " = ";
-			if(values[i].equals(""))
-			{
+			if (values[i].equals("")) {
 				consulta += "null";
 			}
 			consulta += "'" + values[i] + "'";
-			if(i != values.length - 1)
+			if (i != values.length - 1)
 				consulta += ", ";
 		}
-		
+
 		consulta += "where ";
-		for(int i = 0; i < camposClaves.length; i++)
-		{
+		for (int i = 0; i < camposClaves.length; i++) {
 			consulta += camposClaves[i] + " = " + "'" + values[Metodos.numeroDeValue(camposClaves[i], col)] + "'";
-			if(i != camposClaves.length - 1)
-			{
+			if (i != camposClaves.length - 1) {
 				consulta += " and ";
 			}
 		}
 		consulta += ";";
-		System.out.println(consulta);
 		return consulta;
 	}
 
@@ -251,15 +237,16 @@ public class Metodos {
 
 	public static String mostrar2Tablas(Scanner sc, String mensaje) {
 		int relacion = getInt(sc, RELACIONES);
-		String join = "";
+		
 		if (relacion == 1) {
 			return "select * from estadisticas join jugadores on estadisticas.jugador=jugadores.codigo";
 		} else if (relacion == 2) {
 			return "select * from jugadores join equipos on jugadores.nombre_equipo=equipos.nombre";
 		} else if (relacion == 3) {
-
 			System.out.print("¿Equipo local(1) o vistante(2)?: ");
 			String aux = sc.nextLine();
+			
+			String join = "";
 			if (aux.equals("1")) {
 				join = "equipos.nombre=partidos.equipo_local";
 			} else if (aux.equals("2")) {
@@ -272,13 +259,13 @@ public class Metodos {
 			return null;
 		}
 	}
-	
+
 	public static void mostrarDatos(Connection connection, String consulta, Scanner sc) {
 		if (consulta == null) {
 			System.out.println("Opción no disponible.");
 			return;
 		}
-		
+
 		try {
 			ResultSet res = ejecutarConsultaDeSeleccion(connection, consulta);
 			ResultSetMetaData rmd = res.getMetaData();
@@ -309,7 +296,7 @@ public class Metodos {
 					}
 				}
 				System.out.println();
-				
+
 				if (contador % 250 == 0) {
 					String cadena = "";
 					System.out.print("Para parar 'fin': ");
@@ -344,10 +331,13 @@ public class Metodos {
 			insertValues = Partidos.cogerDatos(sc);
 			break;
 		}
+
+		if (insertValues == null)
+			return;
+
 		consultaFinal = Metodos.prepararConsultaInsert(insertValues, tabla);
 		boolean result = Metodos.ejecutarConsultaDeAccion(connection, consultaFinal);
-		if(!result)
-		{
+		if (!result) {
 			System.out.println("Tienes un error en tu consulta");
 		}
 	}
@@ -381,10 +371,12 @@ public class Metodos {
 			columnas = Partidos.cogerNombresDeColumnas();
 			break;
 		}
+
+		if (modificarValues == null)
+			return;
 		consultaFinal = Metodos.prepararConsultaUpdate(modificarValues, tabla, camposClaves, columnas);
 		boolean result = Metodos.ejecutarConsultaDeAccion(connection, consultaFinal);
-		if(!result)
-		{
+		if (!result) {
 			System.out.println("Tienes un error en tu consulta");
 		}
 	}
@@ -392,7 +384,7 @@ public class Metodos {
 	public static void eliminarDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc, mensaje);
 		ejecutarConsultaDeAccion(connection, SETFOREINGKEY);
-		
+
 		switch (tabla) {
 		case "estadisticas":
 			Estadisticas.eliminarDatos(connection, sc);

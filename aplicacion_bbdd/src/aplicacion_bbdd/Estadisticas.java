@@ -5,16 +5,18 @@ import java.util.Scanner;
 
 public class Estadisticas {
 
-	public static final String CAMPOCLAVE = "temporada";
-
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
 		System.out.println("");
 		do {
 			Estadisticas.printColumnas();
-			System.out.print("Introduce los datos entre comillas simples: ");
-			tokens = Metodos.tokenize(sc.nextLine());
+			System.out.print("Introduce los datos entre comillas simples(fin para salir): ");
+			String input = sc.nextLine();
+			if (input.equals("fin"))
+				return null;
+			tokens = Metodos.tokenize(input);
+			
 			if (!Estadisticas.validarTokens(tokens)) {
 				System.out.println("Formato incorrecto");
 				continue;
@@ -30,7 +32,7 @@ public class Estadisticas {
 				+ "Puntos_por_partido -> float\n" + "Asistencias_por_partido -> float\n"
 				+ "Tapones_por_partido -> float\n" + "Rebotes_por_partido -> float");
 	}
-	
+
 	public static String[] cogerCamposClaves() {
 		String[] campos = new String[2];
 		campos[0] = "temporada";
@@ -67,10 +69,11 @@ public class Estadisticas {
 
 		return true;
 	}
-	
+
 	private static boolean validarCampoClave(String dato) {
-		if (dato.length() > 5 || dato.length() == 0) return false;
-		
+		if (dato.length() > 5 || dato.length() == 0)
+			return false;
+
 		for (int i = 0; i < dato.length(); i++) {
 			char letra = dato.charAt(i);
 			if (!Character.isDigit(letra) && i != 2) {
@@ -81,14 +84,14 @@ public class Estadisticas {
 		}
 		return true;
 	}
-	
+
 	public static void eliminarDatos(Connection connection, Scanner sc) {
-		System.out.print("\nElimnar datos de la tabla 'Estadisticas'\n"
-				+ "Indica la " + CAMPOCLAVE + " formato '00/00': ");
+		System.out.print(
+				"\nElimnar datos de la tabla 'Estadisticas'\n" + "Indica la temporada formato '00/00': ");
 		String clave = sc.nextLine();
-		
+
 		if (validarCampoClave(clave)) {
-			String consulta = "delete from estadisticas where " + CAMPOCLAVE + " like '" + clave + "'";
+			String consulta = "delete from estadisticas where temporada like '" + clave + "'";
 			Metodos.ejecutarConsultaDeAccion(connection, consulta);
 			System.out.println("Eliminación de datos completada.");
 		} else {
