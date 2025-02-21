@@ -20,6 +20,7 @@ public class Metodos {
 			+ "2. Jugadores - Equipos\n"
 			+ "3. Equipos - Partidos\n"
 			+ "Tu elección: ";
+	static final String SETFOREINGKEY = "SET FOREIGN_KEY_CHECKS=0;";
 
 	public static boolean isInt(String num) {
 		try {
@@ -390,6 +391,22 @@ public class Metodos {
 
 	public static void eliminarDatos(Connection connection, Scanner sc, String mensaje) {
 		String tabla = Metodos.elegirTabla(sc, mensaje);
+		ejecutarConsultaDeAccion(connection, SETFOREINGKEY);
+		
+		switch (tabla) {
+		case "estadisticas":
+			Estadisticas.eliminarDatos(connection, sc);
+			break;
+		case "jugadores":
+			Jugadores.eliminarDatos(connection, sc);
+			break;
+		case "equipos":
+			Equipos.eliminarDatos(connection, sc);
+			break;
+		case "partidos":
+			Partidos.eliminarDatos(connection, sc);
+			break;
+		}
 	}
 
 	public static String crearLaBase(Connection connection, String mensaje) {

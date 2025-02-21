@@ -1,12 +1,11 @@
 package aplicacion_bbdd;
 
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class Partidos {
 
 	public static final String CAMPOCLAVE = "codigo";
-	public static final String FOREINGKEYLOCAL = "equipo_local";
-	public static final String FOREINGKEYVISITANTE = "equipo_visitante";
 
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
@@ -66,5 +65,31 @@ public class Partidos {
 			return false;
 
 		return true;
+	}
+	
+	private static boolean validarCampoClave(String dato) {
+		if (dato.length() > 11 || dato.length() == 0) return false;
+		
+		for (int i = 0; i < dato.length(); i++) {
+			char letra = dato.charAt(i);
+			if (!Character.isDigit(letra)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static void eliminarDatos(Connection connection, Scanner sc) {
+		System.out.print("\nElimnar datos de la tabla 'Partidos'\n"
+				+ "Indica el " + CAMPOCLAVE + " formato 'int(11)': ");
+		String clave = sc.nextLine();
+		
+		if (validarCampoClave(clave)) {
+			String consulta = "delete from partidos where " + CAMPOCLAVE + " = " + clave;
+			Metodos.ejecutarConsultaDeAccion(connection, consulta);
+			System.out.println("Eliminación de datos completada.");
+		} else {
+			System.out.println("Formato no válido");
+		}
 	}
 }
