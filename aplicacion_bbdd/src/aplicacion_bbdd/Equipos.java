@@ -13,8 +13,12 @@ public class Equipos {
 		System.out.println("");
 		do {
 			Equipos.printColumnas();
-			System.out.print("Introduce los datos entre comillas simples: ");
-			tokens = Metodos.tokenize(sc.nextLine());
+			System.out.print("Introduce los datos entre comillas simples(fin para salir): ");
+			String input = sc.nextLine();
+			if (input.equals("fin"))
+				return null;
+			tokens = Metodos.tokenize(input);
+
 			if (!Equipos.validarTokens(tokens)) {
 				System.out.println("Formato incorrecto");
 				continue;
@@ -59,17 +63,18 @@ public class Equipos {
 
 		return true;
 	}
-	
+
 	private static boolean validarCampoClave(String dato) {
-		if (dato.length() > 20 || dato.length() == 0) return false;
+		if (dato.length() > 20 || dato.length() == 0)
+			return false;
 		return true;
 	}
-	
+
 	public static void eliminarDatos(Connection connection, Scanner sc) {
-		System.out.print("\nElimnar datos de la tabla 'Equipos'\n"
-				+ "Indica el " + CAMPOCLAVE + " formato 'varchar(20)': ");
+		System.out.print(
+				"\nElimnar datos de la tabla 'Equipos'\n" + "Indica el " + CAMPOCLAVE + " formato 'varchar(20)': ");
 		String clave = sc.nextLine();
-		
+
 		if (validarCampoClave(clave)) {
 			String consulta = "delete from equipos where " + CAMPOCLAVE + " like '" + clave + "'";
 			Metodos.ejecutarConsultaDeAccion(connection, consulta);
