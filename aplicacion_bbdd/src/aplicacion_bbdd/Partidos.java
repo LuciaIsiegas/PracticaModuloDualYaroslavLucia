@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.util.Scanner;
 
 public class Partidos {
-	
+
 	public static final String CAMPOCLAVE = "codigo";
-	
+
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
@@ -21,18 +21,31 @@ public class Partidos {
 			}
 			hayDatos = true;
 		} while (!hayDatos);
-		
+
 		return tokens;
 	}
 
 	private static void printColumnas() {
-		System.out.println("Columns:\n"
-				+ "codigo -> int(11) PK\n"
-				+ "equipo_local -> varchar(20)\n"
-				+ "equipo_visitante -> varchar(20)\n"
-				+ "puntos_local -> int(11)\n"
-				+ "puntos_visitante -> int(11)\n"
+		System.out.println("Columns:\n" + "codigo -> int(11) PK\n" + "equipo_local -> varchar(20)\n"
+				+ "equipo_visitante -> varchar(20)\n" + "puntos_local -> int(11)\n" + "puntos_visitante -> int(11)\n"
 				+ "temporada -> varchar(5)");
+	}
+	
+	public static String[] cogerCamposClaves() {
+		String[] campos = new String[1];
+		campos[0] = "codigo";
+		return campos;
+	}
+
+	public static String[] cogerNombresDeColumnas() {
+		String[] c = new String[6];
+		c[0] = "codigo";
+		c[1] = "equipo_local";
+		c[2] = "equipo_visitante";
+		c[3] = "puntos_local";
+		c[4] = "puntos_visitante";
+		c[5] = "temporada";
+		return c;
 	}
 
 	private static boolean validarTokens(String[] tokens) {

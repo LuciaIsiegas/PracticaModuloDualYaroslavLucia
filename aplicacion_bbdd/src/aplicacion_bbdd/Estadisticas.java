@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.util.Scanner;
 
 public class Estadisticas {
-	
+
 	public static final String CAMPOCLAVE = "temporada";
-	
+
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
@@ -21,7 +21,7 @@ public class Estadisticas {
 			}
 			hayDatos = true;
 		} while (!hayDatos);
-		
+
 		return tokens;
 	}
 
@@ -29,6 +29,24 @@ public class Estadisticas {
 		System.out.println("Columns:\n" + "temporada -> varchar(5) PK\n" + "jugador -> int(11) PK\n"
 				+ "Puntos_por_partido -> float\n" + "Asistencias_por_partido -> float\n"
 				+ "Tapones_por_partido -> float\n" + "Rebotes_por_partido -> float");
+	}
+	
+	public static String[] cogerCamposClaves() {
+		String[] campos = new String[2];
+		campos[0] = "temporada";
+		campos[1] = "jugador";
+		return campos;
+	}
+
+	public static String[] cogerNombresDeColumnas() {
+		String[] c = new String[6];
+		c[0] = "temporada";
+		c[1] = "jugador";
+		c[2] = "Puntos_por_partido";
+		c[3] = "Asistencias_por_partido";
+		c[4] = "Tapones_por_partido";
+		c[5] = "Rebotes_por_partido";
+		return c;
 	}
 
 	private static boolean validarTokens(String[] tokens) {
