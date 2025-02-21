@@ -5,8 +5,7 @@ import java.sql.*;
 
 public class Metodos {
 
-	static final String BBDD = "jdbc:mysql://localhost:3306/nba";
-	static final String BBDD_NEW = "jdbc:mysql://localhost:3306";
+	static final String BBDD = "jdbc:mysql://localhost:3306";
 	static final String USER = "root";
 	static final String BASE_NOMBRE = "nba";
 	static final String MENU = "Menú de opciones\n" + "_______________________________________________\n"

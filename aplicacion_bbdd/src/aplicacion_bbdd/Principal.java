@@ -11,7 +11,7 @@ public class Principal {
 		String baseActiva = "";
 
 		try {
-			conexion = DriverManager.getConnection(Metodos.BBDD_NEW, Metodos.USER, "");
+			conexion = DriverManager.getConnection(Metodos.BBDD, Metodos.USER, "");
 			System.out.println("¡Bienvenido a la base de datos de la NBA!");
 
 			int opcion = 0;
