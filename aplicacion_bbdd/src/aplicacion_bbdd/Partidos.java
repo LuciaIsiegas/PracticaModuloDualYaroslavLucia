@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 public class Partidos {
 
-	public static final String CAMPOCLAVE = "codigo";
-
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
@@ -86,11 +84,11 @@ public class Partidos {
 
 	public static void eliminarDatos(Connection connection, Scanner sc) {
 		System.out
-				.print("\nElimnar datos de la tabla 'Partidos'\n" + "Indica el " + CAMPOCLAVE + " formato 'int(11)': ");
+				.print("\nElimnar datos de la tabla 'Partidos'\n" + "Indica el codigo formato 'int(11)': ");
 		String clave = sc.nextLine();
 
 		if (validarCampoClave(clave)) {
-			String consulta = "delete from partidos where " + CAMPOCLAVE + " = " + clave;
+			String consulta = "delete from partidos where codigo = " + clave;
 			Metodos.ejecutarConsultaDeAccion(connection, consulta);
 			System.out.println("Eliminación de datos completada.");
 		} else {

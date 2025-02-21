@@ -223,7 +223,6 @@ public class Metodos {
 			}
 		}
 		consulta += ";";
-		System.out.println(consulta);
 		return consulta;
 	}
 
@@ -238,15 +237,16 @@ public class Metodos {
 
 	public static String mostrar2Tablas(Scanner sc, String mensaje) {
 		int relacion = getInt(sc, RELACIONES);
-		String join = "";
+		
 		if (relacion == 1) {
 			return "select * from estadisticas join jugadores on estadisticas.jugador=jugadores.codigo";
 		} else if (relacion == 2) {
 			return "select * from jugadores join equipos on jugadores.nombre_equipo=equipos.nombre";
 		} else if (relacion == 3) {
-
 			System.out.print("¿Equipo local(1) o vistante(2)?: ");
 			String aux = sc.nextLine();
+			
+			String join = "";
 			if (aux.equals("1")) {
 				join = "equipos.nombre=partidos.equipo_local";
 			} else if (aux.equals("2")) {
@@ -320,7 +320,6 @@ public class Metodos {
 		switch (tabla) {
 		case "estadisticas":
 			insertValues = Estadisticas.cogerDatos(sc);
-
 			break;
 		case "jugadores":
 			insertValues = Jugadores.cogerDatos(sc);

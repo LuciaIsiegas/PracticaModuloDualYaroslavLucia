@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 public class Estadisticas {
 
-	public static final String CAMPOCLAVE = "temporada";
-
 	public static String[] cogerDatos(Scanner sc) {
 		boolean hayDatos = false;
 		String[] tokens = null;
@@ -89,11 +87,11 @@ public class Estadisticas {
 
 	public static void eliminarDatos(Connection connection, Scanner sc) {
 		System.out.print(
-				"\nElimnar datos de la tabla 'Estadisticas'\n" + "Indica la " + CAMPOCLAVE + " formato '00/00': ");
+				"\nElimnar datos de la tabla 'Estadisticas'\n" + "Indica la temporada formato '00/00': ");
 		String clave = sc.nextLine();
 
 		if (validarCampoClave(clave)) {
-			String consulta = "delete from estadisticas where " + CAMPOCLAVE + " like '" + clave + "'";
+			String consulta = "delete from estadisticas where temporada like '" + clave + "'";
 			Metodos.ejecutarConsultaDeAccion(connection, consulta);
 			System.out.println("Eliminación de datos completada.");
 		} else {
